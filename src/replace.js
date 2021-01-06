@@ -72,7 +72,7 @@ function evaluateImport(node, config, context) {
   const currentFileDirectory = path.dirname(context.getFilename());
   for (const alias of config.replaceAliases) {
     const { replaceDir, replaceWith } = alias;
-    const fullImportPath = path.resolve(currentFileDirectory, value);
+    const fullImportPath = path.resolve(currentFileDirectory, value).replace(/\\/g, '/');
 
     if (fullImportPath.startsWith(replaceDir)) {
       canFix = true;
@@ -106,7 +106,7 @@ function getConfiguration(context) {
     ignorePatterns: options.ignore,
     replaceMethod: options.method,
     replaceAliases: options.aliases.map(alias => ({
-      replaceDir: path.resolve(alias.path),
+      replaceDir: path.resolve(alias.path).replace(/\\/g, '/'),
       replaceWith: alias.name,
     })),
   }
